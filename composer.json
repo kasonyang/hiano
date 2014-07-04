@@ -1,0 +1,23 @@
+{
+    "name": "kasonyang/hiano",
+    "description": "",
+    "authors": [
+        {
+            "name": "kasonyang",
+            "email": "i@kasonyang.com"
+        }
+    ],
+    "autoload" : {
+        "psr-4" : {
+            "Hiano\\Driver\\" : "libs/Driver/"
+        },
+        "files" : ["libs/Hiano.php"]
+    },
+    "require": {
+        
+    },
+    "require-dev" : {
+        "smarty/smarty" : "v3.1.18"
+    },
+    "license" : "MIT"
+}
