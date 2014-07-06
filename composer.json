@@ -17,7 +17,8 @@
         
     },
     "require-dev" : {
-        "smarty/smarty" : "v3.1.18"
+        "smarty/smarty" : "v3.1.18",
+        "kasonyang/smarty4hiano" : "*"
     },
     "license" : "MIT"
 }
