@@ -1,7 +1,7 @@
 <?php
 return array(
     'view'  =>  array(
-        'engine'    =>  'Smarty',   //模板引擎
+        'engine'    =>  'Smarty4Hiano\\SmartyDriver',   //模板引擎
         'default_version'   =>  ''   //默认视图版本
     ),
     //URL配置

@@ -410,7 +410,7 @@ class App {
     static function newView(){
         $view = new \Hiano\View\View();
         $type = self::getConfig()->get('view.engine');
-        $driver = \Hiano\Hiano::loadDriver('View\\' . $type . 'Driver');
+        $driver = new $type();
         $view->setDriver($driver);
         if($default_version = self::getConfig()->get('view.default_version')){
             $view->setVersion($default_version);
