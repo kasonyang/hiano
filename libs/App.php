@@ -142,7 +142,7 @@ class App {
         
         try {
             $ctrl = self::getController($module_name , $controller_name , $request , $view);
-            $filter_chain = new Filter\FilterChain(function($ctrl,$view){
+            $filter_chain = new Filter\FilterChain(function() use ($ctrl,$view){
                 $action_ret = $ctrl->dispatch(self::getActionName());
                 if(is_array($action_ret)){
                     echo json_encode($action_ret);
@@ -155,7 +155,7 @@ class App {
                 }else{
                     throw new \Exception('错误的动作返回值！');
                 }
-            },[$ctrl,$view]);
+            });
             if ($filters = self::$filter) {
                 $filter_count = count($filters);
                 for ($i = 0; $i < $filter_count; $i++) {
