@@ -125,6 +125,16 @@ class App {
         
         $view = self::newView();
         
+        $view->set('app', array(
+            'request'   =>  array(
+                'parameter' =>  $request->getParameter(),
+                'post'      =>  $request->getPost(),
+                'cookie'    =>  $request->getCookie(),
+                'session'   =>  $_SESSION,
+                'server'    =>  $_SERVER
+            )
+        ));
+        
         $tpl_dir = $view_dir . '/' . ucfirst($module_name) . '/' . ucfirst($controller_name);
         $view->addTemplateDir($view_dir);
         $view->addTemplateDir($tpl_dir);
