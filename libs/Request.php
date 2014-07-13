@@ -49,7 +49,7 @@ class Request {
      * @return string|array $names为字符串时返回单个结果,为数组或null时返回多个结果(数组)
      */
     function getPost($names = null) {
-        return self::getSubArray(self::getAllPost(), $names);
+        return self::getSubArray($this->post, $names);
     }
 
     /**
@@ -58,7 +58,7 @@ class Request {
      * @return string|array $names为字符串时返回单个结果,为数组或null时返回多个结果(数组)
      */
     function getCookie($names = null) {
-        return self::getSubArray(self::getAllCookie(), $names);
+        return self::getSubArray($this->cookie, $names);
     }
 
     /**
