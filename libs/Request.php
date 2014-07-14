@@ -11,11 +11,12 @@ class Request {
 
     private $parameter, $post, $cookie , $files ,$server_vars;
     
-    function __construct($parameter,$post,$files,$server_vars) {
+    function __construct($parameter,$post,$files,$server_vars,$cookie) {
         $this->parameter = $parameter;
         $this->post = $post;
         $this->files = $files;
         $this->server_vars = $server_vars;
+        $this->cookie = $cookie;
     }
 
     private static function getSubArray($arr, $keys = null) {

@@ -85,7 +85,7 @@ class App {
         if(!self::$request){
             $router = self::getRouter();
             $parameter = $router->parse(self::getMainUrl());
-            self::$request = new Request\Request($parameter , $_POST, $_FILES, $_SERVER);
+            self::$request = new Request\Request($parameter , $_POST, $_FILES, $_SERVER,$_COOKIE);
         }
         return self::$request;
     }
@@ -244,7 +244,7 @@ class App {
      * @param string $default_outerurl
      */
     static function redirectRequest($default_outerurl='/') {
-        $return_url = Request::getParameter('return');
+        $return_url = self::getRequest()->getParameter('return');
         if($return_url and substr($return_url, 0,1)=='/'){
             $url = $return_url;
         }else{
