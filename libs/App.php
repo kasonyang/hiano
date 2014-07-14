@@ -210,6 +210,11 @@ class App {
         return self::getRequest()->getParameter('action');
     }
 
+    private static function innerUrl2OuterUrl($inner_url){
+        $inner_url_obj = new \Hiano\Route\InnerUrl(self::getModuleName(), self::getControllerName(), self::getActionName());
+        $url = self::getRouter()->format($inner_url_obj->parse($inner_url));
+        return $url;
+    }
 
     /**
      * 
@@ -219,8 +224,7 @@ class App {
     static function redirect($inner_url = null , $return = null){
         $url = null;
         if($inner_url){
-            $inner_url_obj = new \Hiano\Route\InnerUrl(self::getModuleName(), self::getControllerName(), self::getActionName());
-            $url = self::getRouter()->format($inner_url_obj->parse($inner_url));
+            $url = self::innerUrl2OuterUrl($inner_url);
             if($return !== null and $return !==false){
                 $return_url = is_bool($return) ? self::getUrl() : $return;
                 $u = new \Hiano\Route\StandardUrl($url);
@@ -241,14 +245,14 @@ class App {
     /**
      * 跳转到目前URL指定的URL（由URL里的return参数指定）
      * 出于安全方面的考虑，指定的URL必须以‘/’开头
-     * @param string $default_outerurl
+     * @param string $default_inner_url
      */
-    static function redirectRequest($default_outerurl='/') {
+    static function redirectRequest($default_inner_url='/') {
         $return_url = self::getRequest()->getParameter('return');
         if($return_url and substr($return_url, 0,1)=='/'){
             $url = $return_url;
         }else{
-            $url = $default_outerurl;
+            $url = self::innerUrl2OuterUrl($default_inner_url);
         }
         self::redirectOut($url);
     }
