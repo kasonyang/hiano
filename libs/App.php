@@ -245,10 +245,14 @@ class App {
      * 出于安全方面的考虑，指定的URL必须以‘/’开头
      * @param string $default_inner_url
      */
-    static function redirectRequest($default_inner_url='/') {
+    static function redirectRequest($default_inner_url='') {
         $return_url = self::getRequest()->getParameter('return');
-        if($return_url and substr($return_url, 0,1)=='/'){
-            $url = $return_url;
+        if($return_url){
+            if(substr($return_url, 0,1)=='/'){
+                $url = $return_url;
+            }else{
+                $url = '/';
+            }
         }else{
             $url = self::innerUrl2OuterUrl($default_inner_url);
         }
