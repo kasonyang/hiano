@@ -166,6 +166,10 @@ class Request {
         return $this->server_vars['REQUEST_METHOD'] == 'GET';
     }
 
+    function isAjax(){
+        return $this->server_vars['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest';
+    }
+    
 }
 
 class UploadedFileList{
