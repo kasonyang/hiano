@@ -36,7 +36,7 @@ class Widget{
      * @throws Exception
      */
     function render($version = NULL) {
-        $view = \Hiano\App\App::newView();
+        $view_driver = \Hiano\App\App::newViewDriver();
         $name = get_class($this);
         if(substr($name, -6) !== 'Widget'){
             throw new \Exception('错误的Widget类名:' . $name );
@@ -46,8 +46,12 @@ class Widget{
         if($version){
             $suffix = '.' . $version . $suffix;
         }
-        $tpl_file = HIANO_APP_PATH . '/Widget/' . $short_name . $suffix;
-        return $view->render($tpl_file, $this->vars);
+        $file_name = str_replace('\\', '/', $short_name);
+        $tpl_file = HIANO_APP_PATH . '/Widget/' . $file_name . $suffix;
+        $tpl_dir = dirname($tpl_file);
+        $tpl_basename = basename($tpl_file);
+        $view_driver->setTemplateDirs((array)$tpl_dir);
+        return $view_driver->render($tpl_basename, $this->vars);
     }
     function __toString() {
         return $this->render();
