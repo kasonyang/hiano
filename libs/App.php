@@ -130,7 +130,11 @@ class App {
             'post'      =>  $request->getPost(),
             'cookie'    =>  $request->getCookie(),
             'session'   =>  $_SESSION,
-            'server'    =>  $_SERVER
+            'server'    =>  $_SERVER,
+            'csrf'      =>  array(
+                'name'      =>  '_csrftoken',
+                'value'     =>  $request->getCookie('_csrftoken')
+            )
         ));
         
         $tpl_dir = $view_dir . '/' . ucfirst($module_name) . '/' . ucfirst($controller_name);
