@@ -275,7 +275,7 @@ class App {
             $inner_url_arr = $inner_url_obj->parse($inner_url);
         }
         $ps = self::$request->getPost();
-        $arr = array_merge($ps, $inner_url_arr);
+        $arr = array_merge($inner_url_arr,$ps);
         $url = self::getRouter()->format($arr);
         self::redirectOut($url);
     }
