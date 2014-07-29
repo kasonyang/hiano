@@ -39,6 +39,12 @@ class App {
      * @var \Hiano\Request\Request
      */
     private static $request;
+    
+    /**
+     *
+     * @var \Hiano\View\View
+     */
+    private static $view;
 
     private static function loadFilter($filter_name) {
         $class_name = '\\' . self::getName() . '\\Filter\\' . $filter_name;
@@ -89,6 +95,18 @@ class App {
         }
         return self::$request;
     }
+    
+    /**
+     * 
+     * @return \Hiano\View\View
+     */
+    static function getView(){
+        if(!isset(self::$view)){
+            self::$view = self::newView();
+        }
+        return self::$view;
+    }
+    
     /**
      * 运行前段控制器
      * @param string $module_name 模块名
@@ -123,7 +141,7 @@ class App {
             include $module_main_file;
         }
         
-        $view = self::newView();
+        $view = self::getView();
         
         $view->set('app', array(
             'parameter' =>  $request->getParameter(),
