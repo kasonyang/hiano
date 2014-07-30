@@ -74,9 +74,15 @@ class Router {
      * @throws UrlFormatException
      */
     function format($params) {
+        $param_arr = [];
+        foreach($params as $pk => $pv){
+            if($pv !== ''){
+               $param_arr[$pk] = $pv;
+            }
+        }
         if ($this->route) {
             foreach ($this->route as $route) {
-                if ($url = $route->format($params)){
+                if ($url = $route->format($param_arr)){
                     return \Hiano\App\App::getBaseUrl() . $url . $this->getSuffix();
                 }
             }
