@@ -90,7 +90,8 @@ class App {
     static function getRequest(){
         if(!self::$request){
             $router = self::getRouter();
-            $parameter = $router->parse(self::getMainUrl());
+            $param_arr = $router->parse(self::getMainUrl());
+            $parameter = array_merge($_GET,$param_arr);
             self::$request = new Request\Request($parameter , $_POST, $_FILES, $_SERVER,$_COOKIE);
         }
         return self::$request;
