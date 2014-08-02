@@ -18,7 +18,8 @@
     },
     "require-dev" : {
         "kasonyang/smarty4hiano" : "*",
-        "kasonyang/hitar4hiano"  : "*"
+        "kasonyang/hitar4hiano"  : "*",
+        "kasonyang/phpcomment"  : "*"
     },
     "license" : "MIT"
 }
