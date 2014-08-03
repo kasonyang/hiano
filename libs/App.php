@@ -109,6 +109,16 @@ class App {
     }
     
     /**
+     * 
+     * @param Hiano\Controller\Controller $controller
+     * @param string $action_name
+     */
+    private static function dispatchAction($controller,$action_name){
+        return $action_ret = $controller->dispatch($action_name);
+    }
+
+
+    /**
      * 运行前段控制器
      * @param string $module_name 模块名
      * @param string $controller_name 控制器名
@@ -164,7 +174,7 @@ class App {
         try {
             $ctrl = self::getController($module_name , $controller_name , $request , $view);
             $filter_chain = new Filter\FilterChain(function() use ($ctrl,$view){
-                $action_ret = $ctrl->dispatch(self::getActionName());
+                $action_ret = self::dispatchAction($ctrl, self::getActionName());
                 if(is_array($action_ret)){
                     echo json_encode($action_ret);
                 }elseif(is_string($action_ret)){
