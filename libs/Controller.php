@@ -69,11 +69,7 @@ class Controller {
         if (method_exists($this, '_init')) {
             $this->_init();
         }
-        $action = $action_name . 'Action';
-        $validator = $action_name . 'Validator';
-        if (method_exists($this, $validator)) {
-            $this->$validator();
-        }
+        $action = self::getActionMethodName($action_name);
         if (method_exists($this, $action)) {
             return $this->$action();
         } else {
@@ -128,6 +124,10 @@ class Controller {
         $this->setError($description, $code);
         $this->view->display();
         throw new \Hiano\App\StopException();
+    }
+    
+    static function getActionMethodName($action_name){
+        return $action_name . 'Action';
     }
 
 }
