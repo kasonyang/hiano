@@ -18,6 +18,8 @@ include_once __DIR__ . '/Session.php';
 include_once __DIR__ . '/Token.php';
 include_once __DIR__ . '/View.php';
 include_once __DIR__ . '/Widget.php';
+include_once __DIR__ . '/Exception.php';
+include_once __DIR__ . '/Validator.php';
 
 class FileNotExistException extends \Exception {
     
