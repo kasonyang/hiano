@@ -5,7 +5,8 @@
  * @author kasonyang <i@kasonyang.com>
  */
 
-include __DIR__ . '/../libs/Route.php';
+include_once  __DIR__ . '/../libs/Route.php';
+include_once __DIR__ . '/../libs/App.php';
 use \Hiano\Route;
 
 class RouteTest extends PHPUnit_Framework_TestCase{
