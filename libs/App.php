@@ -67,7 +67,7 @@ class App {
      * @return string
      */
     static function getUrl() {
-        return $_SERVER['REQUEST_URI'];
+        return isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
     }
 
     /**
@@ -75,7 +75,7 @@ class App {
      * @return string
      */
     static function getBaseUrl() {
-        return substr($_SERVER['PHP_SELF'], 0, strrpos($_SERVER['PHP_SELF'], '/') + 1);
+        return substr(self::getUrl(), 0, strrpos($_SERVER['PHP_SELF'], '/') + 1);
     }
     
     static function getMainUrl(){
