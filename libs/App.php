@@ -118,15 +118,18 @@ class App {
         $action_method_name = Controller\Controller::getActionMethodName($action_name);
         $tag = $phpcomment->getMethodTags()[$action_method_name];
         /* @var $tag \PhpComment\Tags */
-        $validate_tags = $tag->get('hiano-validate');
-        if($validate_tags){
-            foreach($validate_tags as $v){
-                $validate_info = explode(' ', $v,2);
-                $validate_value = self::getRequest()->getPost($validate_info[0]);
-                $validate_validator_names = explode(',', $validate_info[1]);
-                foreach($validate_validator_names as $vvn){
-                    $validate_ret = \Hiano\Validator\Validator::validate($validate_value, $vvn);
-                    $validate_ret or \Hiano\Exception::validateFailed($validate_info[0], $validate_value, $vvn);
+        $request = self::getRequest();
+        if($request->isPost()){
+            $validate_tags = $tag->get('hiano-validate');
+            if($validate_tags){
+                foreach($validate_tags as $v){
+                    $validate_info = explode(' ', $v,2);
+                    $validate_value = self::getRequest()->getPost($validate_info[0]);
+                    $validate_validator_names = explode(',', $validate_info[1]);
+                    foreach($validate_validator_names as $vvn){
+                        $validate_ret = \Hiano\Validator\Validator::validate($validate_value, $vvn);
+                        $validate_ret or \Hiano\Exception::validateFailed($validate_info[0], $validate_value, $vvn);
+                    }
                 }
             }
         }
