@@ -1,4 +1,4 @@
 {{extends "master.master"}}
 {{block "container"}}
-    Hello,Hiano!
+    {{$demowidget nofilter}}
 {{/block}}
