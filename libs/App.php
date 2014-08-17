@@ -12,10 +12,6 @@ use \Hiano\Controller;
 use \Hiano\Filter;
 
 
-class RedirectException extends \Exception {
-    
-}
-
 class StopException extends \Exception {
     
 }
@@ -45,6 +41,10 @@ class App {
      * @var \Hiano\View\View
      */
     private static $view;
+    
+    private static $redirect_handler;
+    
+    private static $error_handler;
 
     private static function loadFilter($filter_name) {
         $class_name = '\\' . self::getName() . '\\Filter\\' . $filter_name;
@@ -220,10 +220,12 @@ class App {
             self::forward404();
         } catch (Controller\NoModuleException $e) {
             self::forward404();
-        } catch (RedirectException $e) {
-            
+        } catch (\Hiano\RedirectException $e) {
+            call_user_func(self::$redirect_handler, $e);
         } catch (StopException $e) {
             
+        }  catch (\Hiano\ErrorException $e){
+            call_user_func(self::$error_handler, $e);
         }
     }
     
@@ -238,14 +240,13 @@ class App {
     /**
      * 
      * @param string $url
-     * @throws spRedirectException
+     * @throws \Hiano\RedirectException
      */
     static function redirectOut($url = null) {
         if (!isset($url)){
             $url = self::getBaseURL();
         }
-        header("Location:$url");
-        throw new RedirectException;
+        throw new \Hiano\RedirectException($url);
     }
 
     static function getModuleName(){
@@ -493,6 +494,14 @@ class App {
         $type = self::getConfig()->get('view.engine');
         $driver = new $type();
         return $driver;
+    }
+    
+    static function setRedirectHandler($callback){
+        self::$redirect_handler = $callback;
+    }
+    
+    static function setErrorHandler($callback){
+        self::$error_handler = $callback;
     }
     
 }
