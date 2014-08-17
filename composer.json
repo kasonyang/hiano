@@ -14,12 +14,10 @@
         "files" : ["libs/Hiano.php"]
     },
     "require": {
-        
-    },
-    "require-dev" : {
-        "kasonyang/smarty4hiano" : "*",
-        "kasonyang/hitar4hiano"  : "*",
         "kasonyang/phpcomment"  : "*"
+    },
+    "require-dev": {
+        "kasonyang/smarty4hiano" : "*"
     },
     "license" : "MIT"
 }
