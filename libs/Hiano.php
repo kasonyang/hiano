@@ -124,6 +124,14 @@ class Hiano {
         $app_path = realpath(HIANO_APP_PATH);
         \Hiano\App\App::registerModelPath($app_path . '/Model');
         \Hiano\App\App::registerImportPath($app_path . '/Include');
+        App\App::setErrorHandler(function($ex){
+            /* @var $ex \Hiano\ErrorException */
+            throw new \Exception("Error[{$ex->getCode()}]:" . $ex->getMessage());
+        });
+        App\App::setRedirectHandler(function($ex){
+            /* @var $ex \Hiano\RedirectException */
+            header('Location:' . $ex->getRedirectUrl());
+        });
     }
 
 }
