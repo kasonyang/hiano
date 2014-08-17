@@ -20,6 +20,8 @@ class NoActionException extends \Exception {
 }
 
 class Controller {
+    
+    private $error;
 
     /**
      *
@@ -106,12 +108,10 @@ class Controller {
      * @param int $code 错误代号
      */
     function setError($description, $code = 0) {
-        $app = $this->view->get('app');
-        $app['error'] = array(
+        $this->error = array(
             'code' => $code,
             'description' => $description
         );
-        $this->view->set('app',$app);
     }
 
     /**
@@ -121,13 +121,17 @@ class Controller {
      * @throws spStopException
      */
     function error($description, $code = 0) {
-        $this->setError($description, $code);
-        $this->view->display();
-        throw new \Hiano\App\StopException();
+        \Hiano\Exception::error($description, $code);
     }
     
     static function getActionMethodName($action_name){
         return $action_name . 'Action';
+    }
+    
+    public function __destruct() {
+        if($this->error){
+            $this->error($this->error['description'], $this->error['code']);
+        }
     }
 
 }
