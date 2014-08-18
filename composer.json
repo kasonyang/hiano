@@ -9,7 +9,8 @@
     ],
     "autoload" : {
         "psr-4" : {
-            "Hiano\\Driver\\" : "libs/Driver/"
+            "Hiano\\Driver\\" : "libs/Driver/",
+            "Hiano\\Validator\\" : "libs/Validator/"
         },
         "files" : ["libs/Hiano.php"]
     },
