@@ -19,7 +19,7 @@ class Validator{
      * @return boolean
      */
     static function validate($value,$validator_name){
-        $validator_class = $validator_name . 'Validator';
+        $validator_class = __NAMESPACE__ . '\\' . ucfirst($validator_name) . 'Validator';
         $validator = new $validator_class();
         /* @var $validator ValidatorInterface */
         return $validator->validate($value);
