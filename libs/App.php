@@ -166,7 +166,7 @@ class App {
         $app_path = realpath(HIANO_APP_PATH);
         $controller_dir = $app_path . '/Controller/';
         $view_dir = $app_path . '/View/';
-        $module_main_file = $controller_dir . $module_name . '/main.php';
+        $module_main_file = $controller_dir . ucfirst($module_name) . '/main.php';
         if (file_exists($module_main_file)) {
             include $module_main_file;
         }
