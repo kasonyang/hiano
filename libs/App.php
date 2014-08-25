@@ -144,65 +144,66 @@ class App {
      * @param string $action 动作名
      */
     static function run($module_name = null, $controller_name = null, $action = null) {
-        $request = self::getRequest();
-        if(self::getConfig()->get('security.csrf_defender')){
-            if($request->isPost()){
-                $csrf_token  = $request->getPost('_csrftoken');
-                if($csrf_token != $request->getCookie('_csrftoken')){
-                    exit('CsrfToken Invalid!');
-                }
-            }else{
-                if(!$request->hasCookie('_csrftoken')){
-                    setcookie('_csrftoken', \Hiano\Token\Token::generate('_csrftoken'), 0, '/');
+        try {
+            $request = self::getRequest();
+            if (self::getConfig()->get('security.csrf_defender')) {
+                if ($request->isPost()) {
+                    $csrf_token = $request->getPost('_csrftoken');
+                    if ($csrf_token != $request->getCookie('_csrftoken')) {
+                        exit('CsrfToken Invalid!');
+                    }
+                } else {
+                    if (!$request->hasCookie('_csrftoken')) {
+                        setcookie('_csrftoken', \Hiano\Token\Token::generate('_csrftoken'), 0, '/');
+                    }
                 }
             }
-        }
-        
-        
-        $module_name or $module_name = self::getModuleName();// $request->getParameter('module');
-        $controller_name or $controller_name = self::getControllerName();// $request->getParameter('controller');
-        $action or $action = self::getActionName();// $request->getParameter('action');
-        
-        $app_path = realpath(HIANO_APP_PATH);
-        $controller_dir = $app_path . '/Controller/';
-        $view_dir = $app_path . '/View/';
-        $module_main_file = $controller_dir . ucfirst($module_name) . '/main.php';
-        if (file_exists($module_main_file)) {
-            include $module_main_file;
-        }
-        
-        $view = self::getView();
-        
-        $view->set('app', array(
-            'parameter' =>  $request->getParameter(),
-            'post'      =>  $request->getPost(),
-            'cookie'    =>  $request->getCookie(),
-            'session'   =>  $_SESSION,
-            'server'    =>  $_SERVER,
-            'csrf'      =>  array(
-                'name'      =>  '_csrftoken',
-                'value'     =>  $request->getCookie('_csrftoken')
-            )
-        ));
-        
-        $tpl_dir = $view_dir . '/' . ucfirst($module_name) . '/' . ucfirst($controller_name);
-        $view->addTemplateDir($view_dir);
-        $view->addTemplateDir($tpl_dir);
-        $view->setTemplate($action);
-        
-        try {
-            $ctrl = self::getController($module_name , $controller_name , $request , $view);
-            $filter_chain = new Filter\FilterChain(function() use ($ctrl,$view){
+
+
+            $module_name or $module_name = self::getModuleName(); // $request->getParameter('module');
+            $controller_name or $controller_name = self::getControllerName(); // $request->getParameter('controller');
+            $action or $action = self::getActionName(); // $request->getParameter('action');
+
+            $app_path = realpath(HIANO_APP_PATH);
+            $controller_dir = $app_path . '/Controller/';
+            $view_dir = $app_path . '/View/';
+            $module_main_file = $controller_dir . ucfirst($module_name) . '/main.php';
+            if (file_exists($module_main_file)) {
+                include $module_main_file;
+            }
+
+            $view = self::getView();
+
+            $view->set('app', array(
+                'parameter' => $request->getParameter(),
+                'post' => $request->getPost(),
+                'cookie' => $request->getCookie(),
+                'session' => $_SESSION,
+                'server' => $_SERVER,
+                'csrf' => array(
+                    'name' => '_csrftoken',
+                    'value' => $request->getCookie('_csrftoken')
+                )
+            ));
+
+            $tpl_dir = $view_dir . '/' . ucfirst($module_name) . '/' . ucfirst($controller_name);
+            $view->addTemplateDir($view_dir);
+            $view->addTemplateDir($tpl_dir);
+            $view->setTemplate($action);
+
+
+            $ctrl = self::getController($module_name, $controller_name, $request, $view);
+            $filter_chain = new Filter\FilterChain(function() use ($ctrl, $view) {
                 $action_ret = self::dispatchAction($ctrl, self::getActionName());
-                if(is_array($action_ret)){
+                if (is_array($action_ret)) {
                     echo json_encode($action_ret);
-                }elseif(is_string($action_ret)){
+                } elseif (is_string($action_ret)) {
                     echo $action_ret;
-                }elseif($action_ret === TRUE or $action_ret===NULL){
+                } elseif ($action_ret === TRUE or $action_ret === NULL) {
                     $view->display();
-                }elseif($action_ret === FALSE){
+                } elseif ($action_ret === FALSE) {
                     //do nothing
-                }else{
+                } else {
                     throw new \Exception('错误的动作返回值！');
                 }
             });
@@ -224,11 +225,11 @@ class App {
             call_user_func(self::$redirect_handler, $e);
         } catch (StopException $e) {
             
-        }  catch (\Hiano\ErrorException $e){
+        } catch (\Hiano\ErrorException $e) {
             call_user_func(self::$error_handler, $e);
         }
     }
-    
+
     /**
      * 停止动作的执行，方式：抛出spStopException异常，该异常自动被系统捕获处理
      * @throws spStopException
